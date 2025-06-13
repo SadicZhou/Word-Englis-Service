@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysUserRoleMapper">
+    <select id="findAllRoles" resultType="com.atguigu.spzx.model.entity.system.SysRole">
+        select * from sys_role
+        where  is_deleted = 0
+    </select>
+    <select id="findSysUserRoleByUserId" resultType="com.atguigu.spzx.model.entity.system.SysRoleUser">
+        select role_id from sys_user_role
+        where user_id = #{id}
+    </select>
+    <delete id="deleteById">
+        delete from sys_user_role
+        where user_id = #{userid}
+    </delete>
+    <insert id="doAssign" >
+        insert into sys_user_role(role_id,user_id,create_time,update_time,is_deleted)
+        values (#{roleid},#{userid},now(),now(),0)
+    </insert>
+</mapper>
