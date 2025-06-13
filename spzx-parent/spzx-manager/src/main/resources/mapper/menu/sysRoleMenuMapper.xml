@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysRoleMenuMapper">
+
+    <!-- 映射查询到的字段  -->
+    <resultMap id="SysMenuMap" type="com.atguigu.spzx.model.entity.system.SysMenu" autoMapping="true">
+    </resultMap>
+    <!-- 抽离出要查询的列 -->
+    <sql id="menuColumns">id,parent_id,title,component,sort_value,status,create_time,update_time,is_deleted</sql>
+    <!-- 查询当前角色所有菜单 -->
+    <select id="findSysRoleMenuByRoleId" resultType="Long">
+        select menu_id
+        from sys_role_menu where role_id = #{id}  and  is_deleted = 0 and is_half = 0
+    </select>
+    <!--分配菜单-->
+    <insert id="assignMenu">
+        insert into sys_role_menu
+            (
+              role_id,
+              menu_id,
+              create_time,
+              update_time,
+              is_deleted,
+              is_half
+             )
+        values
+            <foreach collection="menuIdList" item="menuInfo" separator=",">
+                (
+                #{roleId},
+                #{menuInfo.id},
+                now(),
+                now(),
+                0,
+                #{menuInfo.isHalf}
+                )
+            </foreach>
+
+    </insert>
+    <!--解绑菜单 -->
+    <update id="deleteById">
+        update sys_role_menu set
+                                 is_deleted = 1,
+                                 update_time = now()
+        where role_id = #{roleId}
+    </update>
+    <!--设置半开-->
+    <update id="updateIsHlaf">
+        update sys_role_menu set
+            is_half = 1
+        where menu_id = #{menuId}
+    </update>
+</mapper>

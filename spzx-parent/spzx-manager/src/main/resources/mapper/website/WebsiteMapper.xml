@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.WebsiteMapper">
+    <resultMap id="categoryMap" type="com.atguigu.spzx.model.entity.website.Banner" autoMapping="true">
+    </resultMap>
+    <sql id="columns">
+        id,`namer`,img_url,link,create_time,update_time,is_deleted,`order`
+    </sql>
+    <insert id="saveBanner">
+        insert into site_banner(
+            namer,
+            img_url,
+            link,
+            update_time,
+            is_deleted,
+            `order`
+        )values (
+            #{name},
+            #{imgUrl},
+            #{link},
+            now(),
+            0,
+            #{sort}
+        )
+    </insert>
+    <select id="findAllBanner" resultType="com.atguigu.spzx.model.entity.website.Banner">
+        select <include refid="columns" /> from site_banner
+        where is_deleted = 0
+        order by `order` desc
+    </select>
+</mapper>
