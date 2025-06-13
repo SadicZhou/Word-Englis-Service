@@ -78,8 +78,7 @@
         inner join sys_role_menu rm on rm.menu_id = m.id
         inner join sys_user_role ur on ur.role_id = rm.role_id
         where ur.user_id = #{userId} and m.is_deleted = 0
-        order by m.sort_value\
-   git credential-manager clear
+        order by m.sort_value
 
     </select>
 </mapper>
