@@ -1,0 +1,38 @@
+server:
+  port: 3000
+
+# 配置数据库连接信息
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_spzx?characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: rootzjh@
+  # Redis的相关配置
+  data:
+    redis:
+      host: localhost
+      port: 6379
+#  password: 1234
+
+# mybatis的配置
+mybatis:
+  config-location: classpath:/mybatis-config.xml
+  mapper-locations: classpath:/mapper/*/*.xml
+  
+#配置自定义全局变量
+#注意第一级要顶格写
+#配置权限变量auth:
+#noAuthUrl：请求拦截器白名单
+#minio：minio相关
+spzx:
+  auth:
+    noAuthUrl:
+     - /**
+
+  minio:
+    endpointUrl: http://127.0.0.1:9000
+    accessKey: minioadmin
+    secretKey: minioadmin
+    bucketName: spzx-bucket

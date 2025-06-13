@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ManagerAppliaction<spzx-manager>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.atguigu.spzx.manager.ManagerAppliaction",
+      "projectName": "spzx-manager",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}
