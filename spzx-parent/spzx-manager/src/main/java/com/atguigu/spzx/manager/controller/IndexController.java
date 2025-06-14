@@ -8,6 +8,7 @@ import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
 import com.atguigu.spzx.model.vo.system.SysMenuVo;
+import com.atguigu.spzx.model.vo.system.SysUserVo;
 import com.atguigu.spzx.model.vo.system.ValidateCodeVo;
 import com.atguigu.spzx.utils.AuthContextUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +46,7 @@ public class IndexController {
     @Operation(summary = "用户信息(redis)")
     @GetMapping(value = "/getUserInfoRedis")
     public Result getUserInfoRedis(@RequestHeader(name = "token") String token){
-        SysUser sysUser = sysUserService.getUserInfo(token);
+        SysUserVo sysUser = sysUserService.getUserInfo(token);
         return Result.build(sysUser, ResultCodeEnum.SUCCESS);
     }
     //获取用户信息(从theadLocal获取)

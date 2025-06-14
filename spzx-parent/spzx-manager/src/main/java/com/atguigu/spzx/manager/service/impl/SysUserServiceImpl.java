@@ -19,6 +19,7 @@ import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
 import com.atguigu.spzx.model.vo.system.SysMenuVo;
+import com.atguigu.spzx.model.vo.system.SysUserVo;
 import com.atguigu.spzx.model.vo.system.ValidateCodeVo;
 import com.atguigu.spzx.utils.AuthContextUtil;
 import com.atguigu.spzx.utils.MenuHelper;
@@ -28,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.DigestUtils;
 
@@ -52,6 +54,7 @@ public class SysUserServiceImpl implements SysUserService {
     RedisTemplate<String,String> redisTemplate;//通过Autowired注解注入redis实例
 
     //登录方法
+    @Transactional(readOnly = true) // 添加此注解
     @Override
     public LoginVo login(LoginDto loginDto) {
         //获取图片验证码在redis中的key
@@ -87,8 +90,16 @@ public class SysUserServiceImpl implements SysUserService {
         //6.登录成功生成用户唯一标识token
         String token = UUID.randomUUID().toString().replaceAll("-", "");
         //7.把登录成的用户信息存放到redis里面
+        SysUserVo sysUserVo = new SysUserVo();
+        sysUserVo.setId(sysUser.getId());
+        sysUserVo.setUserName(sysUser.getUserName());
+        sysUserVo.setName(sysUser.getName());
+        sysUserVo.setPhone(sysUser.getPhone());
+        sysUserVo.setStatus(sysUser.getStatus());
+        sysUserVo.setAvatar(sysUser.getAvatar());
+        sysUserVo.setRoleCode(sysUser.getRoleCode());
         redisTemplate.opsForValue()
-                .set("user:login" + token, JSON.toJSONString(sysUser), 30, TimeUnit.MINUTES);
+                .set("user:login" + token, JSON.toJSONString(sysUserVo), 30, TimeUnit.MINUTES);
         //8.返回LoginVo对象
         LoginVo loginVo = new LoginVo();
         loginVo.setToken(token);
@@ -97,12 +108,12 @@ public class SysUserServiceImpl implements SysUserService {
 
     //获取用户信息
     @Override
-    public SysUser getUserInfo(String token) {
+    public SysUserVo getUserInfo(String token) {
         if(StrUtil.isEmpty(token)){
             throw new GuiguException(ResultCodeEnum.TOKEN_MISS);
         }
         String tokenRedis = redisTemplate.opsForValue().get("user:login" + token);
-        SysUser user = JSON.parseObject(tokenRedis, SysUser.class);
+        SysUserVo user = JSON.parseObject(tokenRedis, SysUserVo.class);
         return user;
     }
     //登出

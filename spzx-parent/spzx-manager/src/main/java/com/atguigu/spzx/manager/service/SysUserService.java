@@ -8,6 +8,7 @@ import com.atguigu.spzx.model.entity.system.SysRoleUser;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.system.LoginVo;
 import com.atguigu.spzx.model.vo.system.SysMenuVo;
+import com.atguigu.spzx.model.vo.system.SysUserVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface SysUserService {
     //登录
     LoginVo login(LoginDto LoginDto);
     //查询用户信息
-    SysUser getUserInfo(String token);
+    SysUserVo getUserInfo(String token);
     //退出登录
     Void logout(String token);
     //用户列表(分页、模糊查询)

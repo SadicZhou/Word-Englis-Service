@@ -39,7 +39,7 @@ public class SysMenuController {
     }
 
     @Operation(summary = "修改菜单")
-    @PostMapping("update")
+    @PostMapping("/update")
     public Result update(@RequestBody SysMenuDto SysMenuDto){
         sysMenuService.updateById(SysMenuDto);
         return Result.build(null, ResultCodeEnum.SUCCESS);

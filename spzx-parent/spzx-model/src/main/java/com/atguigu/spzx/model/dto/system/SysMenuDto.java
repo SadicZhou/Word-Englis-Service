@@ -14,4 +14,6 @@ public class SysMenuDto extends BaseEntity {
     private Integer parentId;
     private Integer status;
     private String path;
+    private String name;
+    private Integer type ;
 }

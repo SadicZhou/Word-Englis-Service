@@ -4,6 +4,8 @@ import com.atguigu.spzx.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Schema(description = "系统用户实体类")
 public class SysUser extends BaseEntity {
@@ -28,5 +30,11 @@ public class SysUser extends BaseEntity {
 
 	@Schema(description = "状态（1：正常 0：停用）")
 	private Integer status;
+
+	@Schema(description = "角色编码")
+	private String roleCode;
+
+	@Schema(description = "角色编码集合")
+	private List<String> roleCodeList;
 
 }
