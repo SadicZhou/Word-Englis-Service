@@ -6,7 +6,7 @@
     <resultMap id="SysMenuMap" type="com.atguigu.spzx.model.entity.system.SysMenu" autoMapping="true">
     </resultMap>
     <!-- 抽离出要查询的列 -->
-    <sql id="menuColumns">id,parent_id,title,component,path,sort_value,status,create_time,update_time,is_deleted</sql>
+    <sql id="menuColumns">id,parent_id,title,component,path,sort_value,status,type,create_time,update_time,is_deleted</sql>
     <!-- 查询所有菜单 -->
     <select id="findNodes" resultMap="SysMenuMap">
         select <include refid="menuColumns" />
@@ -21,7 +21,8 @@
             component,
             path,
             sort_value,
-            status
+            status,
+            type
         )
         values (
                 #{id},
@@ -30,7 +31,8 @@
                 #{component},
                 #{path},
                 #{sortValue},
-                #{status})
+                #{status},
+                #{type})
     </insert>
     <update id="updateById">
         UPDATE sys_menu
@@ -52,6 +54,9 @@
             </if>
             <if test="status != null">
                 status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
             </if>
             update_time = NOW()
         </set>
