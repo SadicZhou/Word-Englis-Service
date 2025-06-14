@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysDepartMapper">
+
+    <!-- 映射查询到的字段  -->
+    <resultMap id="SysDepartMap" type="com.atguigu.spzx.model.entity.system.SysDepart" autoMapping="true">
+    </resultMap>
+    <!-- 抽离出要查询的列 -->
+    <sql id="departColumns">id,parent_id,name,remark,status,sort_value,create_time,update_time,is_deleted</sql>
+    <!-- 查询所有部门根据父类id -->
+    <select id="findNodes" resultMap="SysDepartMap">
+        select <include refid="departColumns" />
+        from sys_depart where parent_id = #{parentId} and
+        is_deleted = 0
+        order by sort_value
+    </select>
+    <!-- 新增部门 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_depart(
+            parent_id,
+            name,
+            sort_value,
+            status,
+            remark
+        )
+        values (
+                #{parentId},
+                #{name},
+                #{sortValue},
+                #{status},
+                #{remark}
+               )
+    </insert>
+    <!-- 修改部门 -->
+    <update id="updateById">
+        UPDATE sys_depart
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId},
+            </if>
+            <if test="name != null and name != ''">
+                title = #{title},
+            </if>
+            <if test="sortValue != null">
+                sort_value = #{sortValue},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            update_time = NOW()
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!-- 删除部门 -->
+    <update id="deleteById">
+        update sys_depart set
+                            is_deleted = 1,
+                            update_time = now()
+        where id = #{id}
+    </update>
+    <!-- 查询子部门数量 -->
+    <select id="countByParentId" resultType="java.lang.Integer">
+        select count(id) from sys_depart
+        where  parent_id = #{parentId}
+          and is_deleted = 0
+    </select>
+</mapper>

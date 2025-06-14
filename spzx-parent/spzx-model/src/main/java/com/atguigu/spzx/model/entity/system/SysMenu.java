@@ -31,6 +31,8 @@ public class SysMenu extends BaseEntity {
 	@Schema(description = "状态(0:禁止,1:正常)")
 	private Integer status;
 
+	@Schema(description = "类型0目录1菜单")
+	private Integer type;
 	// 下级列表
 	@Schema(description = "子节点")
 	private List<SysMenu> children;
